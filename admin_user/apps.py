@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class SuperadminConfig(AppConfig):
+class AdminUserConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'superadmin'
+    name = 'admin_user'

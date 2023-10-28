@@ -5,7 +5,7 @@ from .models import User
 from .serializers import UserSerializer
 from employee_mng.models import Employee
 from datetime import datetime, timedelta
-
+from employee_mng.serializers import EmployeeSerializer
 class UserAuth(APIView):
     def post(self, request, format=None):
         try:
@@ -80,5 +80,28 @@ class EmployeePromote(APIView):
             else:
                 return Response({"message": "User does not exists"}, status=status.HTTP_200_OK)
             
+        except Exception as e:
+            return Response({"message": str(e)}, status=status.HTTP_400_BAD_REQUEST)                
+class GetEmployeeFiveYear(APIView):
+    def get(self, request):
+        try:
+            emp_instances = Employee.objects.all()
+            emp_list = []
+
+            today = datetime.now().date()
+
+            for emp in emp_instances:
+                date_of_joining = datetime.strptime(emp.date_of_joining, '%d/%m/%Y').date()
+
+                difference = today - date_of_joining
+
+                if difference > timedelta(days=365 * 5):
+                    # Append the serialized data of the employee to the list
+                    serializer = EmployeeSerializer(emp)
+                    emp_data = serializer.data
+                    emp_list.append(emp_data)
+
+            return Response({"employee_list": emp_list}, status=status.HTTP_200_OK)
+
         except Exception as e:
             return Response({"message": str(e)}, status=status.HTTP_400_BAD_REQUEST)

@@ -1,4 +1,6 @@
 from django.urls import path
 from . import views
 
-urlpatterns = []
+urlpatterns = [
+    path('create/', views.DepartmentFn.as_view(), name='department_create'),
+]

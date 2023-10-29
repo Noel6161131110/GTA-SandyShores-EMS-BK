@@ -73,6 +73,10 @@ class EmployeePromote(APIView):
                     user_instance.assigned_role = "manager"
                     user_instance.save()
                     
+                    admin_instance = User.objects.filter(user_email=user_instance.email).first()
+                    admin_instance.user_role = "manager"
+                    admin_instance.save()
+                    
                     return Response({"message": "Employee promoted to manager"}, status=status.HTTP_200_OK)
                 else:
                     return Response({"message": "Employee can not be promoted because date of joining is less than 5 years"}, status=status.HTTP_200_OK)

@@ -5,7 +5,7 @@ from .models import User
 from .serializers import UserSerializer
 from employee_mng.models import Employee
 from datetime import datetime, timedelta
-from employee_mng.serializers import EmployeeSerializer
+from employee_mng.serializers import EmployeeSerializer, GetEmployeeSerializer
 class UserAuth(APIView):
     def post(self, request, format=None):
         try:
@@ -98,10 +98,50 @@ class GetEmployeeFiveYear(APIView):
                 date_of_joining = datetime.strptime(emp.date_of_joining, '%d/%m/%Y').date()
 
                 difference = today - date_of_joining
+                
+                if emp.assigned_role == "employee":
 
-                if difference > timedelta(days=365 * 5):
+                    if difference > timedelta(days=365 * 5):
+                        # Append the serialized data of the employee to the list
+                        serializer = GetEmployeeSerializer(emp)
+                        emp_data = serializer.data
+                        emp_list.append(emp_data)
+
+            return Response({"employee_list": emp_list}, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({"message": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        
+        
+class GetManager(APIView):
+    def get(self, request):
+        try:
+            emp_instances = Employee.objects.all()
+            emp_list = []
+
+            for emp in emp_instances:
+                if emp.assigned_role == "manager":
                     # Append the serialized data of the employee to the list
-                    serializer = EmployeeSerializer(emp)
+                    serializer = GetEmployeeSerializer(emp)
+                    emp_data = serializer.data
+                    emp_list.append(emp_data)
+
+            return Response({"employee_list": emp_list}, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({"message": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        
+        
+class GetEmployee(APIView):
+    def get(self, request):
+        try:
+            emp_instances = Employee.objects.all()
+            emp_list = []
+
+            for emp in emp_instances:
+                if emp.assigned_role == "employee":
+                    # Append the serialized data of the employee to the list
+                    serializer = GetEmployeeSerializer(emp)
                     emp_data = serializer.data
                     emp_list.append(emp_data)
 

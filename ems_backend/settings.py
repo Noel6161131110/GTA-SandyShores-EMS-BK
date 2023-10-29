@@ -42,6 +42,28 @@ INSTALLED_APPS = [
     'org_projects',
     'admin_user',
     'designations',
+    'corsheaders',
+]
+
+
+CORS_ALLOW_METHODS = (
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+)
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://localhost:4200",
+    "https://localhost:3000",
+    "https://localhost:4200",
+    'https://employee-management-phi.vercel.app/',
+    'https://localhost:5000',
+    'http://localhost:5000',
+    
 ]
 
 MIDDLEWARE = [

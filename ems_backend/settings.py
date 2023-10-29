@@ -63,6 +63,8 @@ CORS_ALLOWED_ORIGINS = [
     'https://employee-management-phi.vercel.app/',
     'https://localhost:5000',
     'http://localhost:5000',
+    'https://localhost:5173',
+    'http://localhost:5173',
     
 ]
 
